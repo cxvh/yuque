@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>如何对内容加密🔐? (密码👉web) | 语雀知识库</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="两种方法 Nginx 授权访问 Hexo-Blog-Encrypt  Nginx 授权访问 前置条件：你的 Hexo 博客搭在 Nginx 服务器；  安装 htpasswd 插件 1sudo apt-get install apache2-utils 创建密码文件，密码文件的路径path可自定义，但要与之后的Nginx配置中保持一致, 1234sudo htpasswd -c &#x2F;path&#x2F;htp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何对内容加密🔐? (密码👉web)">
+<meta property="og:url" content="https://cxvh.github.io/2020/10/27/rg42ai/index.html">
+<meta property="og:site_name" content="语雀知识库">
+<meta property="og:description" content="两种方法 Nginx 授权访问 Hexo-Blog-Encrypt  Nginx 授权访问 前置条件：你的 Hexo 博客搭在 Nginx 服务器；  安装 htpasswd 插件 1sudo apt-get install apache2-utils 创建密码文件，密码文件的路径path可自定义，但要与之后的Nginx配置中保持一致, 1234sudo htpasswd -c &#x2F;path&#x2F;htp">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-27T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-20T07:19:48.568Z">
+<meta property="article:author" content="Baran">
+<meta property="article:tag" content="encrypt">
+<meta property="article:tag" content="🔐">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/yuque/atom.xml" title="语雀知识库" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/yuque/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/yuque/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/yuque/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/yuque/" id="logo">语雀知识库</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/yuque/">Home</a>
+        
+          <a class="main-nav-link" href="/yuque/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/yuque/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://cxvh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-rg42ai" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/yuque/2020/10/27/rg42ai/" class="article-date">
+  <time class="dt-published" datetime="2020-10-27T00:00:00.000Z" itemprop="datePublished">2020-10-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/yuque/categories/hexo/">hexo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      如何对内容加密🔐? (密码👉web)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="两种方法"><a href="#两种方法" class="headerlink" title="两种方法"></a>两种方法</h2><ul>
+<li>Nginx 授权访问</li>
+<li>Hexo-Blog-Encrypt</li>
+</ul>
+<h3 id="Nginx-授权访问"><a href="#Nginx-授权访问" class="headerlink" title="Nginx 授权访问"></a>Nginx 授权访问</h3><blockquote>
+<p>前置条件：你的 Hexo 博客搭在 Nginx 服务器；</p>
+</blockquote>
+<p>安装 htpasswd 插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install apache2-utils</span><br></pre></td></tr></table></figure>
+<p>创建密码文件，密码文件的路径<code>path</code>可自定义，但要与之后的<code>Nginx</code>配置中保持一致,</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo htpasswd -c /path/htpasswd username</span><br><span class="line">New password:</span><br><span class="line">Re-type new password:</span><br><span class="line">Adding password <span class="keyword">for</span> user username</span><br></pre></td></tr></table></figure>
+<p>配置 nginx 服务器</p>
+<blockquote>
+<p>特定访问目录加密处理,location 后面的路径是你想要加密的文件或文件夹的路径，具体可通过你 Hexo 生成的 public 文件夹查找。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name www.oneonecity.com www.oneonecity.cn;</span><br><span class="line">    root &#x2F;var&#x2F;www&#x2F;blog&#x2F;public;</span><br><span class="line">    index index.html ;</span><br><span class="line">    charset utf-8;</span><br><span class="line">    access_log logs&#x2F;access.log;</span><br><span class="line">    error_log logs&#x2F;error.log;</span><br><span class="line"></span><br><span class="line">    location &#x2F;webHook &#123;</span><br><span class="line">            proxy_pass http:&#x2F;&#x2F;127.0.0.1:7777;</span><br><span class="line">    &#125;</span><br><span class="line">    # 特定访问目录加密处理,location后面的路径是你想要加密的文件或文件夹的路径，具体可通过你Hexo生成的public文件夹查找：</span><br><span class="line">    location ^~&#x2F;1991&#x2F;08&#x2F;07&#x2F;&#123;</span><br><span class="line">            auth_basic &quot;Please input your name and passeord:&quot;;</span><br><span class="line">            auth_basic_user_file &#x2F;path&#x2F;htpasswd;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重新载入<code>Nginx配置</code>文件使之生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx reload</span><br></pre></td></tr></table></figure>
+<p>访问加密文件进行验证</p>
+<hr>
+<h3 id="Hexo-Blog-Encrypt"><a href="#Hexo-Blog-Encrypt" class="headerlink" title="Hexo-Blog-Encrypt"></a>Hexo-Blog-Encrypt</h3><p>使用 demo</p>
+<blockquote>
+<p>首先在 <code>_config.yml</code> 中启用该插件</p>
+</blockquote>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Security</span></span><br><span class="line"></span><br><span class="line"><span class="section">##</span></span><br><span class="line"></span><br><span class="line">encrypt:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在你的文章的头部添加上对应的字段，如 <code>password</code>, <code>abstract</code>, <code>message</code></p>
+</blockquote>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: hello world</span><br><span class="line">date: 2016-03-30 21:18:02</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">  -</span> fdsafsdaf</span><br><span class="line">password: Mike</span><br><span class="line">abstract: Welcome to my blog, enter password to read.</span><br><span class="line">message: Welcome to my blog, enter password to read.</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>以下内容来自该插件的中文说明文档，<a target="_blank" rel="noopener" href="https://github.com/D0n9X1n/hexo-blog-encrypt">详见 github</a>。</p>
+</blockquote>
+<blockquote>
+<p>提 <code>issue</code> 之前，请务必提供复现方式，<code>log</code>，配置信息等必要信息。良好的 <code>issue</code> 可以节省双方的时间。</p>
+</blockquote>
+<p><em>请严格按照模版要求，不明确的 <code>issue</code> 将直接关闭。</em></p>
+<p><strong>参考 issue:</strong></p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/MikeCoder/hexo-blog-encrypt/issues/83">Issue 83</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MikeCoder/hexo-blog-encrypt/issues/68">Issue 68</a></li>
+</ul>
+</blockquote>
+<h4 id="这是个啥"><a href="#这是个啥" class="headerlink" title="这是个啥"></a>这是个啥</h4><ul>
+<li><p><del>首先, 这是 Hexo 生态圈中 <strong>最好的</strong> 博客加密插件</del></p>
+</li>
+<li><p>你可能需要写一些私密的博客, 通过密码验证的方式让人不能随意浏览.</p>
+</li>
+<li><p>这在 <code>wordpress, emlog</code> 或是其他博客系统中都很容易实现, 然而 <code>hexo</code> 除外. :(</p>
+</li>
+<li><p>为了解决这个问题, 让我们有请 “hexo-blog-encrypt”.</p>
+</li>
+</ul>
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><ul>
+<li><p>一旦你输入了正确的密码, 它将会被存储在本地浏览器的 localStorage 中. 按个按钮, 密码将会被清空. 若博客中又脚本, 它将会被正确地执行.</p>
+</li>
+<li><p>支持按标签加密.</p>
+</li>
+<li><p>所有的核心功能都是由原生的 API 所提供的. 在 Node.js 中, 我们使用 <a target="_blank" rel="noopener" href="https://nodejs.org/dist/latest-v12.x/docs/api/crypto.html">Crypto</a>. 在浏览器中, 我们使用 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API">Web Crypto API</a>.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2898">PBKDF2</a>, <a target="_blank" rel="noopener" href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">SHA256</a> 被用于分发密钥, <a target="_blank" rel="noopener" href="https://csrc.nist.gov/publications/detail/sp/800-38a/final">AES256-CBC</a> 被用于加解密, 我们还使用 <a target="_blank" rel="noopener" href="https://csrc.nist.gov/csrc/media/publications/fips/198/1/final/documents/fips-198-1_final.pdf">HMAC</a> 来验证密文的来源, 并确保其未被篡改.</p>
+</li>
+<li><p>我们广泛地使用 Promise 来进行异步操作, 以此确保线程不被杜塞.</p>
+</li>
+<li><p>过时的浏览器将不能正常显示, 因此, 请升级您的浏览器.</p>
+</li>
+</ul>
+<h4 id="在线演示"><a href="#在线演示" class="headerlink" title="在线演示"></a>在线演示</h4><ul>
+<li>点击 <a target="_blank" rel="noopener" href="https://mhexo.github.io/">Demo Page</a>, <strong>所有的密码都是 <code>hello</code></strong>.</li>
+</ul>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
+<li><p><code>npm install --save hexo-blog-encrypt</code></p>
+</li>
+<li><p>或 <code>yarn add hexo-blog-encrypt</code> (需要) <a target="_blank" rel="noopener" href="https://yarnpkg.com/en/">Yarn</a>)</p>
+</li>
+</ul>
+<h4 id="快速使用"><a href="#快速使用" class="headerlink" title="快速使用"></a>快速使用</h4><ul>
+<li>将 “password” 字段添加到您文章信息头就像这样.</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">date: 2016-03-30 21:18:02</span><br><span class="line">password: mikemessi</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<ul>
+<li>再使用 <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</code> 在本地预览加密的文章.</li>
+</ul>
+<h4 id="设置优先级"><a href="#设置优先级" class="headerlink" title="设置优先级"></a>设置优先级</h4><p>文章信息头 &gt; 按标签加密</p>
+<h4 id="高级设置"><a href="#高级设置" class="headerlink" title="高级设置"></a>高级设置</h4><h5 id="文章信息头"><a href="#文章信息头" class="headerlink" title="文章信息头"></a>文章信息头</h5><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">  -</span> 作为笔记加密</span><br><span class="line">date: 2016-03-30 21:12:21</span><br><span class="line">password: mikemessi</span><br><span class="line">abstract: 有东西被加密了, 请输入密码查看.</span><br><span class="line">message: 您好, 这里需要密码.</span><br><span class="line">wrong<span class="emphasis">_pass_</span>message: 抱歉, 这个密码看着不太对, 请再试试.</span><br><span class="line">wrong<span class="emphasis">_hash_</span>message: 抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<h5 id="config-yml"><a href="#config-yml" class="headerlink" title="_config.yml"></a><code>_config.yml</code></h5><h6 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h6><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Security</span></span><br><span class="line"><span class="attr">encrypt:</span> <span class="comment"># hexo-blog-encrypt</span></span><br><span class="line">  <span class="attr">abstract:</span> <span class="string">有东西被加密了,</span> <span class="string">请输入密码查看.</span></span><br><span class="line">  <span class="attr">message:</span> <span class="string">您好,</span> <span class="string">这里需要密码.</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">name:</span> <span class="string">tagName</span>, <span class="attr">password:</span> <span class="string">密码A</span> &#125;</span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">name:</span> <span class="string">tagName</span>, <span class="attr">password:</span> <span class="string">密码B</span> &#125;</span><br><span class="line">  <span class="attr">template:</span> <span class="string">&lt;div</span> <span class="string">id=&quot;hexo-blog-encrypt&quot;</span> <span class="string">data-wpm=&quot;&#123;&#123;hbeWrongPassMessage&#125;&#125;&quot;</span> <span class="string">data-whm=&quot;&#123;&#123;hbeWrongHashMessage&#125;&#125;&quot;&gt;&lt;div</span> <span class="string">class=&quot;hbe-input-container&quot;&gt;&lt;input</span> <span class="string">type=&quot;password&quot;</span> <span class="string">id=&quot;hbePass&quot;</span> <span class="string">placeholder=&quot;&#123;&#123;hbeMessage&#125;&#125;&quot;</span> <span class="string">/&gt;&lt;label&gt;&#123;&#123;hbeMessage&#125;&#125;&lt;/label&gt;&lt;div</span> <span class="string">class=&quot;bottom-line&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;script</span> <span class="string">id=&quot;hbeData&quot;</span> <span class="string">type=&quot;hbeData&quot;</span> <span class="string">data-hmacdigest=&quot;&#123;&#123;hbeHmacDigest&#125;&#125;&quot;&gt;&#123;&#123;hbeEncryptedData&#125;&#125;&lt;/script&gt;&lt;/div&gt;</span></span><br><span class="line">  <span class="attr">wrong_pass_message:</span> <span class="string">抱歉,</span> <span class="string">这个密码看着不太对,</span> <span class="string">请再试试.</span></span><br><span class="line">  <span class="attr">wrong_hash_message:</span> <span class="string">抱歉,</span> <span class="string">这个文章不能被校验,</span> <span class="string">不过您还是能看看解密后的内容.</span></span><br></pre></td></tr></table></figure>
+<h6 id="对博文禁用-Tag-加密"><a href="#对博文禁用-Tag-加密" class="headerlink" title="对博文禁用 Tag 加密"></a>对博文禁用 Tag 加密</h6><p>只需要将博文头部的 <code>password</code> 设置为 <code>&quot;&quot;</code> 即可取消 Tag 加密.</p>
+<p>Example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Callback Test</span><br><span class="line">date: 2019-12-21 11:54:07</span><br><span class="line">tags:</span><br><span class="line">    - A Tag should be encrypted</span><br><span class="line">password: &quot;&quot;</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">Use a &quot;&quot; to diable tag encryption.</span><br></pre></td></tr></table></figure>
+<h5 id="配置优先级"><a href="#配置优先级" class="headerlink" title="配置优先级"></a>配置优先级</h5><p>文章信息头 &gt; <code>_config.yml</code> (站点根目录下的) &gt; 默认配置</p>
+<h5 id="关于-Callback-函数"><a href="#关于-Callback-函数" class="headerlink" title="关于 Callback 函数"></a>关于 Callback 函数</h5><p>在部分博客中, 解密后部分元素可能无法正常显示或者表现, 这属于已知问题. 目前的解决办法是通过自行查阅自己的博客中的代码, 了解到在 onload 事件发生时调用了哪些函数, 并将这些函数挑选后写入到博客内容中. 如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Callback Test</span><br><span class="line">date: 2019-12-21 11:54:07</span><br><span class="line">tags:</span><br><span class="line">    - Encrypted</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">This is a blog to test Callback functions. You just need to add code at the last of your post like following:</span><br><span class="line"></span><br><span class="line">It will be called after the blog decrypted.</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    &#x2F;&#x2F; 添加一个 script tag 与代码在文章末尾.</span><br><span class="line">    alert(&quot;Hello World&quot;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>例子在: <a target="_blank" rel="noopener" href="https://mhexo.github.io/2019/12/21/CallbackTest/">Callback 例子</a>.</p>
+<h5 id="对-TOC-进行加密"><a href="#对-TOC-进行加密" class="headerlink" title="对 TOC 进行加密"></a>对 TOC 进行加密</h5><p>如果你有一篇文章使用了 TOC，你需要修改模板的部分代码。这里用 landscape 作为例子：</p>
+<ul>
+<li>你可以在 hexo/themes/landscape/layout/_partial/article.ejs 找到 article.ejs。</li>
+<li>然后找到 &lt;% post.content %&gt; 这段代码，通常在 30 行左右。</li>
+<li>使用如下的代码来替代它:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if(post.toc &#x3D;&#x3D; true)&#123; %&gt;</span><br><span class="line">  &lt;div id&#x3D;&quot;toc-div&quot; class&#x3D;&quot;toc-article&quot; &lt;% if (post.encrypt &#x3D;&#x3D; true) &#123; %&gt;style&#x3D;&quot;display:none&quot; &lt;% &#125; %&gt;&gt;</span><br><span class="line">    &lt;strong class&#x3D;&quot;toc-title&quot;&gt;Index&lt;&#x2F;strong&gt;</span><br><span class="line">      &lt;% if (post.encrypt &#x3D;&#x3D; true) &#123; %&gt;</span><br><span class="line">        &lt;%- toc(post.origin, &#123;list_number: true&#125;) %&gt;</span><br><span class="line">      &lt;% &#125; else &#123; %&gt;</span><br><span class="line">        &lt;%- toc(post.content, &#123;list_number: true&#125;) %&gt;</span><br><span class="line">      &lt;% &#125; %&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br><span class="line">&lt;%- post.content %&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="许可"><a href="#许可" class="headerlink" title="许可"></a>许可</h4><p>看看 <a href="./LICENSE">LICENSE</a>.</p>
+<h4 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h4><p>Collaborator - <a target="_blank" rel="noopener" href="https://github.com/xiazeyu">xiazeyu</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://cxvh.github.io/2020/10/27/rg42ai/" data-id="cklde6nnt00041on1h0pn4e92" data-title="如何对内容加密🔐? (密码👉web)" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/yuque/tags/encrypt/" rel="tag">encrypt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/yuque/tags/%F0%9F%94%90/" rel="tag">🔐</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/yuque/2020/11/03/poagn1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Markdown 大全 ⛅
+        
+      </div>
+    </a>
+  
+  
+    <a href="/yuque/2020/10/22/pydihy/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">从零开始开发一个hexo博客 😋</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/yuque/categories/Markdown/">Markdown</a></li><li class="category-list-item"><a class="category-list-link" href="/yuque/categories/hexo/">hexo</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/yuque/tags/encrypt/" rel="tag">encrypt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yuque/tags/music/" rel="tag">music</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yuque/tags/M/" rel="tag">Ⓜ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yuque/tags/%E5%9F%BA%E7%A1%80/" rel="tag">基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yuque/tags/%F0%9F%94%90/" rel="tag">🔐</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/yuque/tags/encrypt/" style="font-size: 10px;">encrypt</a> <a href="/yuque/tags/music/" style="font-size: 10px;">music</a> <a href="/yuque/tags/M/" style="font-size: 10px;">Ⓜ</a> <a href="/yuque/tags/%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">基础</a> <a href="/yuque/tags/%F0%9F%94%90/" style="font-size: 10px;">🔐</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/yuque/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/yuque/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/yuque/archives/2020/10/">十月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/yuque/2020/12/29/rbblqy/">hexo 使用 QQ音乐 😋</a>
+          </li>
+        
+          <li>
+            <a href="/yuque/2020/11/03/poagn1/">Markdown 大全 ⛅</a>
+          </li>
+        
+          <li>
+            <a href="/yuque/2020/10/27/rg42ai/">如何对内容加密🔐? (密码👉web)</a>
+          </li>
+        
+          <li>
+            <a href="/yuque/2020/10/22/pydihy/">从零开始开发一个hexo博客 😋</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Baran<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/yuque/" class="mobile-nav-link">Home</a>
+  
+    <a href="/yuque/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/yuque/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/yuque/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/yuque/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
